@@ -1,0 +1,7 @@
+Flask
+web3
+pandas
+plotly
+numpy
+python-dotenv
+requests

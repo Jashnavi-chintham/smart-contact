@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card shadow-sm p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Blockchain Audit Trail</h2>
+        <span class="badge bg-success">Verified on Ledger</span>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-hover border">
+            <thead class="table-dark">
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Subject (ID)</th>
+                    <th>Resource</th>
+                    <th>Trust Level</th>
+                    <th>Decision</th>
+                    <th>Transaction Hash</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.time }}</td>
+                    <td><code>{{ log.subject }}</code></td>
+                    <td>{{ log.object }}</td>
+                    <td>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar bg-info" style="width: {{ log.trust }}%">{{ log.trust }}%</div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge {{ 'bg-success' if log.granted == 'Allowed' else 'bg-danger' }}">
+                            {{ log.granted }}
+                        </span>
+                    </td>
+                    <td><small class="text-muted">{{ log.tx_hash[:15] }}...</small></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

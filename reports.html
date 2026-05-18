@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4 text-center">
+        <h2 class="display-6">Dynamic Context-Aware Analytics</h2>
+        <p class="text-muted">Visualizing Real-Time Blockchain IoT Access Decisions</p>
+        <hr>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white font-weight-bold">Trust Score Distribution</div>
+                <div class="card-body">
+                    <div id="chart1" style="min-height: 350px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white font-weight-bold">Access Status Trend</div>
+                <div class="card-body">
+                    <div id="chart2" style="min-height: 350px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white font-weight-bold">IoT Device Health Breakdown</div>
+                <div class="card-body">
+                    <div id="chart3" style="min-height: 450px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Use a try-catch block to prevent one failed graph from breaking the whole page
+        try {
+            // Ensure variables exist and are parsed correctly from Flask
+            const g1 = {{ graph1 | safe if graph1 else 'null' }};
+            const g2 = {{ graph2 | safe if graph2 else 'null' }};
+            const g3 = {{ graph3 | safe if graph3 else 'null' }};
+
+            if (g1) Plotly.newPlot('chart1', g1.data, g1.layout || {}, {responsive: true});
+            if (g2) Plotly.newPlot('chart2', g2.data, g2.layout || {}, {responsive: true});
+            if (g3) Plotly.newPlot('chart3', g3.data, g3.layout || {}, {responsive: true});
+        } catch (error) {
+            console.error("Plotly Rendering Error:", error);
+            alert("Error loading dynamic visualizations. Please check if the dataset is uploaded correctly.");
+        }
+    });
+</script>
+{% endblock %}
